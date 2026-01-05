@@ -1,0 +1,88 @@
+  " PROCESS pour déterminer comment monter un SELECT
+  "
+  " 1 - SELECT ...
+  "     └─ Tous les champs ? Si oui :
+  "           SELECT *
+  "     └─ Tous les champs mais une seule ligne ? Si oui :
+  "           SELECT SINGLE *
+  "     └─ Tous les champs sans doublon ? Si oui :
+  "           SELECT DISTINCT *
+  "     └─ Certains champs ? Si oui :
+  "           SELECT field1, field2, field3
+  "     └─ Certains champs sur une seule ligne ? Si oui :
+  "           SELECT SINGLE field1, field2, field3
+  "     └─ Certains champs sans doublons ? Si oui :
+  "           SELECT DISTINCT field1, field2, field3
+  "     └─ Certains champs + renommage ? Si oui :
+  "           SELECT field1 AS nom1, field2 AS nom2, field3 AS nom3
+  "     └─ Certains champs sur une ligne + renommage ? Si oui :
+  "           SELECT SINGLE field1 AS nom1, field2 AS nom2, field3 AS nom3
+  "     └─ Certains champs sans doublons + renommage ? Si oui :
+  "           SELECT DISTINCT field1 AS nom1, field2 AS nom2, field3 AS nom3
+  "
+  " 2 - FROM ...
+  "     └─ Paramètre Obligatoire
+  "         └─ Besoin de renommer ? Si oui :
+  "               ... FROM dbtabA AS nomA
+  "            Si non :
+  "               ... FROM dbtab
+  "
+  " 3 - JOIN ...
+  "     └─ Demande de jointure avec une seconde table ? Si oui :
+  "         └─ Les tables A et B ont elles des clés en commun ? Si oui :
+  "             └─ Les données des deux tables doivent elles être dans une seule itab en retour ? Si oui :
+  "                 └─ DONNEES EN COMMUN uniquement ? Si oui :
+  "                     └─ Une seule clé en commun ? Si oui :
+  "                         INNER JOIN tableB ON tableA~key1 = tableB~key1 
+  "                     └─ Plusieurs clés en commun ? Si oui :
+  "                         INNER JOIN tableB ON tableA~key1 = tableB~key1 
+  "                                              AND tableA~key2 = tableB~key2
+  "                                              AND tableA~key3 = tableB~key3
+  "                 └─ DONNEES de la tableA + Données en commun ? Si oui :
+  "                         LEFT JOIN tableB ON tableA~key1 = tableB~key1 
+  "                 └─ DONNEES de la tableB + Données en commun ? Si oui :
+  "                         RIGHT JOIN tableB ON tableA~key1 = tableB~key1 
+  "             └─ Données des deux dbtab dans deux tables différentes ?
+  "                 └─ Aller au point 5
+  "
+  " 4 - INTO ...
+  "     └─ Plusieurs lignes dans une table locale (uniquement accessible dans sa scope)
+  "           INTO TABLE @lt_itab " Nécessite que la table lt_itab soit déclarée/existe dans la scope
+  "        OU
+  "           INTO TABLE @DATA(lt_itab) " Déclaration dynamique (création au moment du SELECT)
+  "     └─ Une seule ligne de données ? (ex: SELECT SINGLE)
+  "         └─ Dans une structure ? Si oui :
+  "                 INTO @ls_structure " Nécessite que la structure ls_structure soit déclarée/existe dans la scope
+  "               OU
+  "                 INTO @DATA(ls_structure) " Déclaration dynamique (création au moment du SELECT)
+  "         └─ Dans une ou plusieurs variables ? Si oui :
+  "                 INTO ( @lv_variable1, @lv_variable2, @lv_variable3 ) " Nécessite une variable par champ + qu'elle soit déclarée/existe dans la scope
+  "               OU
+  "                 INTO ( @DATA(lv_variable1), @DATA(lv_variable2), @DATA(lv_variable3) ) " Déclaration dynamique (création au moment du SELECT)
+  "
+  " 5 - FOR ALL ENTRIES IN ...
+  "     └─ Besoin d'effectuer le SELECT avec le ou les IDs en commun entre la dbtab ciblée du SELECT
+  "        et une itab ? Si oui :
+  "           FOR ALL ENTRIES IN @itab WHERE key1_de_la_dbtab = @itab-key1
+  "                                      AND key2_de_la_dbtab = @itab-key2
+  "                                      AND key3_de_la_dbtab = @itab-key3
+  "
+  " 6 - WHERE ...
+  "     └─ Paramètre Non Obligatoire mais à toujours utiliser sinon on récupèrerai toutes les valeurs
+  "        (exception: SELECT SINGLE -> Récupération de la 1ère ligne de la table en base de donnée)
+  "         └─ champ de la table égale à une valeur ? Si oui :
+  "               WHERE champ1 = valeur
+  "             └─ Autres conditions ? Si oui :
+  "                   AND champ2 = valeur
+  "                   OR champ3 = valeur
+  "         └─ champ de la table avec d'autres opérateurs à une valeur ? Si oui :
+  "               WHERE champ3 > valeur
+  "             └─ Autres conditions ? Si oui :
+  "                   AND champ2 <  valeur    " champ2 inférieur à la valeur
+  "                   AND champ3 <= valeur    " champ3 inférieur ou égal à la valeur
+  "                   AND champ4 <> valeur    " champ4 différent de la valeur
+  "                   AND champ5 <> ''        " champ5 différent de null
+  "                   AND champ6 >  valeur    " champ6 supérieur à la valeur 
+  "                   AND champ7 >= valeur    " champ7 supérieur ou égale à la valeur
+  "         └─ champ de la table dans une range ? si oui :
+  "               WHERE champ8 IN @lr_range " la table lr_range doit existée et être non vide !
