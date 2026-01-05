@@ -1,0 +1,35 @@
+*******************************************************************
+* Table ZEKKO_PMI - Entêtes de commandes d'achat
+*******************************************************************
+* Transaction : SE11
+* Classe de livraison : A (Application table)
+* Catégorie de données : APPL0
+* Catégorie de taille : 0 (0 à 100 enregistrements)
+*******************************************************************
+
+STRUCTURE:
+
+CHAMPS CLÉS:
+  MANDT   MANDT   CLNT   3   0   Client
+  EBELN   EBELN   CHAR  10   0   Purchasing Document Number
+
+CHAMPS NON-CLÉS:
+  BSTYP   BSTYP   CHAR   1   0   Purchasing Document Category
+  AEDAT   AEDAT   DATS   8   0   Changed On
+  ERNAM   ERNAM   CHAR  12   0   Name of Person who Created the Object
+  WAERS   WAERS   CUKY   5   0   Currency Key
+
+*******************************************************************
+* PARAMÈTRES TECHNIQUES
+*******************************************************************
+* Catégorie de données : APPL0
+* Catégorie de taille : 0
+*******************************************************************
+
+*******************************************************************
+* NOTES
+*******************************************************************
+* - Clé primaire : MANDT + EBELN
+* - Table d'entête pour les commandes d'achat
+* - Liée à la table ZEKPO_PMI (postes)
+*******************************************************************

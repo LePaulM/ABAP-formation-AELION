@@ -1,0 +1,29 @@
+*******************************************************************
+* FICHIER DE TEST - DATA_TEST.txt
+*******************************************************************
+* Format : Texte tabulé (champs séparés par tabulations)
+* Encodage : UTF-8
+* Sans ligne d'entête
+*******************************************************************
+
+Structure du fichier (les 5 premiers champs = entête, suivants = poste):
+
+EBELN	BSTYP	AEDAT	ERNAM	WAERS	EBELP	MATNR	WERKS	MENGE	NETPR	NETWR	MEINS
+
+Exemple de lignes:
+4000000000	F	31.08.2018	EHPUSER121	EUR	10	4707	FULL	100.000	3,00	300,00	BT
+4030000000	F	31.08.2018	EHPUSER121	EUR	10	4707	FULL	20.000	3,00	60,00	BT
+4500018198	F	28.06.2018	EHPUSER311	EUR	10	1300-251	1000	10.000	50,00	500,00	PC
+
+*******************************************************************
+* NOTES IMPORTANTES
+*******************************************************************
+* - Les montants utilisent le point (.) comme séparateur de milliers
+* - La virgule (,) est le séparateur décimal
+* - Le programme effectue automatiquement la conversion
+* - Format des dates : DD.MM.YYYY
+* - La commande 4500018215 contient intentionnellement un doublon
+*   de poste pour tester la détection d'anomalie
+*******************************************************************
+
+Fichier complet disponible dans le PDF de spécifications (page 5).

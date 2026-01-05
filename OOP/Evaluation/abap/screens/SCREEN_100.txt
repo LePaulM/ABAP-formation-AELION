@@ -1,0 +1,73 @@
+*******************************************************************
+* SCREEN 100 - Écran ALV de restitution
+*******************************************************************
+* Transaction : SE51
+* Programme : Z_POEC_PMI
+*******************************************************************
+
+PROPRIÉTÉS DU SCREEN:
+  Numéro : 100
+  Description : Écran ALV restitution commandes
+  Type écran suivant : 100
+
+LAYOUT:
+  - Custom Control
+    Nom : CUSTOM_CONTAINER
+    Position : Occupe tout l'écran (maximiser)
+    Dimensions approximatives :
+      Line from : 2
+      Column from : 2
+      Visible length : 118
+      Number of lines : 28
+
+FLOW LOGIC:
+
+  PROCESS BEFORE OUTPUT.
+    MODULE status_0100.
+
+  PROCESS AFTER INPUT.
+    MODULE user_command_0100.
+
+*******************************************************************
+* GUI STATUS : STATUS_100
+*******************************************************************
+* Transaction : SE80 → GUI Status → Create
+* Nom : STATUS_100
+* Description : Status for screen 100
+*
+* Application toolbar:
+*   BACK    | Back    | @01@ | Back
+*   EXIT    | Exit    | @02@ | Exit
+*   CANCEL  | Cancel  | @03@ | Cancel
+*******************************************************************
+
+*******************************************************************
+* GUI TITLE : TITLE_100
+*******************************************************************
+* Transaction : SE41 → Titles
+* Nom : TITLE_100
+* Text : Purchase Orders Display
+*******************************************************************
+
+*******************************************************************
+* CRÉATION DU SCREEN (PROCÉDURE)
+*******************************************************************
+* 1. SE51 → Create
+*    - Program: Z_POEC_PMI
+*    - Screen: 100
+*
+* 2. Layout
+*    - Créer Custom Control : CUSTOM_CONTAINER
+*    - Redimensionner pour occuper tout l'écran
+*
+* 3. Flow Logic
+*    - Copier le code ci-dessus
+*
+* 4. Save & Activate
+*
+* 5. Créer GUI Status (SE80)
+*    - Ajouter les 3 boutons BACK, EXIT, CANCEL
+*
+* 6. Créer GUI Title (SE41)
+*    - Titre : Purchase Orders Display
+*******************************************************************

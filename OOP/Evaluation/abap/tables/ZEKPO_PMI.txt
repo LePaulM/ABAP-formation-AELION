@@ -1,0 +1,48 @@
+*******************************************************************
+* Table ZEKPO_PMI - Postes de commandes d'achat
+*******************************************************************
+* Transaction : SE11
+* Classe de livraison : A (Application table)
+* Catégorie de données : APPL0
+* Catégorie de taille : 1 (100 à 10 000 enregistrements)
+*******************************************************************
+
+STRUCTURE:
+
+CHAMPS CLÉS:
+  MANDT   MANDT     CLNT   3   0   Client
+  EBELN   EBELN     CHAR  10   0   Purchasing Document Number
+  EBELP   EBELP     NUMC   5   0   Item Number of Purchasing Document
+
+CHAMPS NON-CLÉS:
+  MATNR   MATNR     CHAR  18   0   Material Number
+  WERKS   WERKS_D   CHAR   4   0   Plant
+  MENGE   BSTMG     QUAN  13   3   Purchase Order Quantity
+  NETPR   BPREI     CURR  11   2   Net Price in Purchasing Document
+  NETWR   BWERT     CURR  13   2   Net Order Value in PO Currency
+  MEINS   BSTME     UNIT   3   0   Purchase Order Unit of Measure
+
+*******************************************************************
+* PARAMÈTRES TECHNIQUES
+*******************************************************************
+* Catégorie de données : APPL0
+* Catégorie de taille : 1
+*******************************************************************
+
+*******************************************************************
+* RÉFÉRENCES (IMPORTANT pour champs CURR et QUAN)
+*******************************************************************
+* MENGE → Table réf : ZEKPO_PMI, Zone réf : MEINS
+* NETPR → Table réf : ZEKKO_PMI, Zone réf : WAERS
+* NETWR → Table réf : ZEKKO_PMI, Zone réf : WAERS
+*******************************************************************
+
+*******************************************************************
+* NOTES
+*******************************************************************
+* - Clé primaire : MANDT + EBELN + EBELP
+* - Table de postes pour les commandes d'achat
+* - Liée à la table ZEKKO_PMI (entêtes)
+* - Les références CURR/QUAN sont obligatoires pour l'affichage
+*   correct des montants et quantités
+*******************************************************************
