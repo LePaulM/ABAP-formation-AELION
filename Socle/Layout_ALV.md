@@ -970,4 +970,4 @@ Avant de mettre en production un rapport avec layouts :
 
 **Version :** 1.0  
 **Date :** Janvier 2026  
-**Auteur :** Cours ABAP Formation
+**Auteur :** Paul Miancien
