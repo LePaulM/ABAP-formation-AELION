@@ -996,4 +996,72 @@ Réponse : ____________________________________________________________
 | BD10 | Send material master | Génération manuelle MATMAS |
 | BD12 | Send material master (extended) | Génération avec plus d'options |
 | BD21 | Create IDocs from change pointers | Distribution automatique |
-|
+| SALE | IMG ALE | Menu de configuration complet |
+
+### Annexe B : Principaux statuts d'IDocs
+**Statuts de sortie (Outbound) :**
+| Statut | Description | Action requise |
+|--------|-------------|----------------|
+| 01 | IDoc généré | Normal - Master IDoc |
+| 02 | Erreur passage au port | Vérifier port et RFC |
+| 03 | Données transmises OK | ✓ Succès |
+| 30 | Prêt pour envoi | Attente job ou WE15 |
+
+**Statuts d'entrée (Inbound) :**
+
+| Statut | Description | Action requise |
+|--------|-------------|----------------|
+| 50 | IDoc ajouté | En attente de traitement |
+| 51 | Document non comptabilisé | Analyser erreur et retraiter |
+| 53 | Document comptabilisé | ✓ Succès complet |
+| 56 | IDoc avec erreurs ajouté | Analyser et corriger |
+| 64 | Prêt pour transfert | Attente traitement |
+
+---
+
+### Annexe C : Structure simplifiée MATMAS05
+
+```
+MATMAS05 (Type de base)
+│
+├── E1MARAM (Données générales - MARA) [OBLIGATOIRE]
+│   ├── MSGFN (Fonction: 001/004/009)
+│   ├── MATNR (Numéro article)
+│   ├── MTART (Type article)
+│   ├── MBRSH (Branche)
+│   └── MEINS (Unité de base)
+│
+├── E1MAKTM (Textes - MAKT) [Multiple: 1 par langue]
+│   ├── SPRAS (Langue)
+│   └── MAKTX (Texte court)
+│
+├── E1MARCM (Données centre - MARC) [Multiple: 1 par centre]
+│   ├── WERKS (Centre)
+│   ├── DISMM (Caractéristique MRP)
+│   └── MMSTA (Statut article)
+│
+├── E1MARMM (Unités - MARM) [Multiple: 1 par unité]
+│   ├── MEINH (Unité alternative)
+│   ├── UMREZ (Numérateur)
+│   └── UMREN (Dénominateur)
+│
+├── E1MBEWM (Valorisation - MBEW) [Multiple: 1 par centre/type val]
+│   ├── BWKEY (Centre de valorisation)
+│   └── STPRS (Prix standard)
+│
+└── E1MVKEM (Vente - MVKE) [Multiple: 1 par org.vente]
+    ├── VKORG (Organisation commerciale)
+    ├── VTWEG (Canal de distribution)
+    └── KONDM (Groupe de taxation)
+```
+
+### Annexe D : Résolution rapide des problèmes
+
+| Symptôme | Cause probable | Solution |
+|----------|----------------|----------|
+| 0 communication IDoc généré | Système logique récepteur manquant | Renseigner dans BD10 ou vérifier BD64 |
+| Statut 02 | Port ou RFC incorrect | Vérifier WE21 et SM59 |
+| Statut 51 | Données incohérentes | Lire message d'erreur et corriger |
+| Pas de change pointer créé | BD50 ou BD61 non activé | Activer les change pointers |
+| IDoc reste en statut 30 | Traitement différé | Exécuter WE15 ou activer traitement immédiat |
+| Segment vide | Vue non créée dans MM01 | Créer les vues manquantes |
